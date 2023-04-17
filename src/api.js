@@ -24,7 +24,7 @@ export const WEATHER_API_NINJA_KEY = 'd383e60ceamsh61085673c8cd4c4p150888jsn18de
 
 
 
-export const weatherVisualCrossingApiOptions = {
+export const weatherAIApiOptions = {
 	method: 'GET',
 	headers: {
 		'X-RapidAPI-Key': 'd383e60ceamsh61085673c8cd4c4p150888jsn18de1618c455',
@@ -32,5 +32,5 @@ export const weatherVisualCrossingApiOptions = {
 	}
 };
 
-export const WEATHER_API_VISUALCROSSING_URL = 'https://ai-weather-by-meteosource.p.rapidapi.com';
-export const WEATHER_API_VISUALCROSSING_KEY = 'd383e60ceamsh61085673c8cd4c4p150888jsn18de1618c455';
+export const WEATHER_API_AI_URL = 'https://ai-weather-by-meteosource.p.rapidapi.com';
+export const WEATHER_API_AI_KEY = 'd383e60ceamsh61085673c8cd4c4p150888jsn18de1618c455';
