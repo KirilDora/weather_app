@@ -3,6 +3,20 @@
   margin: 20px auto;
 }
 
+.container__button-group {
+  display: flex;
+  margin: 2vh 0 0 0;
+  justify-content: space-evenly;
+}
+
+.container__button-group button {
+  cursor: pointer;
+  border-radius: 15px;
+  font-size: 14px;
+  padding: 1vh 2vw;
+  border-style: none;
+}
+
 .container__daily-weather {
   display: flex;
   flex-direction: row;

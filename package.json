@@ -6,8 +6,13 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "body-parser": "^1.20.2",
+    "chart.js": "^4.3.0",
+    "cors": "^2.8.5",
+    "mongodb": "^5.3.0",
     "react": "^18.2.0",
     "react-accessible-accordion": "^5.0.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "react-select-async-paginate": "^0.7.2",
@@ -36,5 +41,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mongoose": "^7.0.4"
   }
 }

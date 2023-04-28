@@ -24,7 +24,7 @@ const decodeCurrentWeatherResponse = (response, city) => {
  }
 }
 
-const convertResponseiconToDefined = (icon) => {
+/*const convertResponseiconToDefined = (icon) => {
   switch (icon) {
     case 'mostly_cloud':
       return '03d';
@@ -35,7 +35,7 @@ const convertResponseiconToDefined = (icon) => {
     default:
       break;
   }
-}
+}*/
 
 const decodeCurrentWeatherNinjaResponse = (response, city) => {
   return {
@@ -87,7 +87,6 @@ function App() {
       currentWeatherNinjaApiFetch, 
       currentWeatherAIApi])
       .then(async (response) => {
-        console.log(response);
         const weatherResponse = await response[0].json();
         const forecastResponse = await response[1].json();
 
@@ -108,10 +107,34 @@ function App() {
 
   }
 
+ const handleOnClickSave = async (e) => {
+    e.preventDefault();
+    let result = await fetch(
+    'http://localhost:3000/save-temp', {
+        method: "post",
+        body: JSON.stringify({ currentWeather, currentWeatherNinjaApi, currentWeatherAIApi }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    result = await result.json();
+    console.warn(result);
+    if (result) {
+        alert("Data saved succesfully");
+    }
+  }
+
   return (
     <div className="container">
       < Search onSearchChange={handleOnSearchChange} />
-
+      <div className='container__button-group'>
+        <button onClick={handleOnClickSave}>
+          Save current temperature
+        </button>
+        <button>
+          Draw chart
+        </button>
+      </div>
       <div className="container__daily-weather">
         {currentWeather && < CurrentWeather data={currentWeather} />}
         {currentWeatherNinjaApi && < CurrentWeather data={currentWeatherNinjaApi} />}
