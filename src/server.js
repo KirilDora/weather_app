@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 const mongoose = require('mongoose');
 const Weather = require('./weather.js');
 const cors = require('cors');
@@ -44,6 +43,39 @@ app.post('/save-temp', (req, res) => {
       console.log(error);
       //res.render(createPath('error'), { title: 'Error' });
     })
+});
+
+app.get('/draw-chart', (req, res) => {
+  Weather
+    .find()
+    .then((data) => {
+      console.log(data);
+      const dataToSend = {
+        labels: data.map((item) => item.date),
+        datasets: [
+          {
+            label: "Weather API",
+            data: data.map((item) => item.tempApiOne),
+            backgroundColor: ['f3ba2f']
+          },
+          {
+            label: "Ninja API",
+            data: data.map((item) => item.tempApiTwo),
+            backgroundColor: ['2a71d0']
+          },
+          {
+            label: "AI Weather API",
+            data: data.map((item) => item.tempApiThree),
+            backgroundColor: ['rgba(75, 192, 192, 1)']
+          }
+        ] 
+      }
+      console.log(dataToSend);
+      res.send(dataToSend);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.listen(PORT, ()=> {console.log("App listening on port 3000");});
