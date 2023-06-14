@@ -11,7 +11,6 @@ import Search from './components/search/search';
 import CurrentWeather from './components/current-weather/current-weather';
 import Forecast from './components/forecast/forecast';
 import LineChart from './components/chart/line-chart';
-import MultiLineChart from './components/chart/multi-line-chart';
 
 
 const decodeCurrentWeatherResponse = (response, city) => {
@@ -66,65 +65,20 @@ const decodeCurrentWeatherAIResponse = (response, city) => {
   }
 }
 
-const decodeFetchTemperatureResponse = (response) => {
-  const labelsName = [],
-        dataFirst = [],
-        dataSecond = [],
-        dataThird = [];
-  let i = 0;
-
-  for (const item of response) {
-    i++;
-    labelsName.push(i);
-    //labelsName.push(item.date.slice(0,10));
-    dataFirst.push(item.tempApiOne);
-    dataSecond.push(item.tempApiTwo);
-    dataThird.push(item.tempApiThree);
-  }
-  
-  return {
-      labels: labelsName,//response.map((item) => item.date),
-      datasets: [
-        {
-          label: "Weather API",
-          data: dataFirst,//response.map((item) => item.tempApiOne),
-          backgroundColor: ['f3ba2f']
-        },
-        {
-          label: "Ninja API",
-          data: dataSecond,//response.map((item) => item.tempApiTwo),
-          backgroundColor: ['2a71d0']
-        },
-        {
-          label: "AI Weather API",
-          data: dataThird,//response.map((item) => item.tempApiThree),
-          backgroundColor: ['rgba(75, 192, 192, 1)']
-        }
-      ] 
-  }
-}
-
 function App() {
 
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
 
-  const [tempData, setTempData] = useState(null);
-  /*({
-    labels: [1, 2],
-    datasets:[{
-      label:'gained',
-      data:[3,4],
-    },
-  ]
-  });*/
+  const [temperatureData, setTemperatureData] = useState(null);
 
   const [currentWeatherNinjaApi, setCurrentWeatherNinjaApi] = useState(null);
   const [currentWeatherAIApi, setCurrentWeatherAIApi] = useState(null);
 
   const handleOnSearchChange = (searchData) => {
+    setTemperatureData(null);
     const [lat, lon]  = searchData.value.split(" ");
-
+    
     const currentWeatherFetch = fetch(`${WEATHER_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
     const forecastFetch = fetch(`${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`);
 
@@ -175,55 +129,30 @@ function App() {
     }
   }
 
+  useEffect(()=>{
+    console.log("useEffect");
+    console.log(temperatureData);
+  }, [temperatureData])
+
   const handleOnClickDraw = (e) => {
     e.preventDefault();
-    const temperatureFetch = fetch(
-    'http://localhost:3000/draw-chart')
-    .then((response)=>{return response.json()})
+    const temperatureFetch = fetch( 'http://localhost:3000/draw-chart?' + new URLSearchParams({city: currentWeather ? currentWeather.city : null})
+    )
+    .then((response)=>{
+      return response.json()
+    })
     .then((data)=>{
       if(data){
-        alert("Data got from server");
-        setTempData(data);
-        console.log("State value is");
-        console.log(tempData);
+        alert("Data have got from server");
+        console.log("Data have got from server");
+        console.log(data);
+        setTemperatureData(data);
       }
       else
         alert('Something went wrong!');
     })
     .catch((err)=>console.log(err));
-    /*const tempResponse = await temperatureFetch.json();
-    //let data = Object.entries(dataSecond);
-    console.log("Data from server");
-    console.log(tempResponse);
-    console.warn(tempResponse);
-    if (tempResponse) {
-      alert("Data got from server");
-      setTempData(tempResponse);
-    }
-    else
-      alert('Something went wrong!');*/
-
-    /*Promise.all([temperatureFetch])
-    .then( async (result) => {
-      const tempResponse = await result[0].json();
-      console.log("Async response");
-      console.log(tempResponse);
-      console.log("Type of Res");
-      console.log(typeof(tempResponse));
-
-      //setTempData((temp) => Object.assign({}, temp, tempResponse));
-      setTempData(tempResponse);//decodeFetchTemperatureResponse(tempResponse));
-
-      console.log('Temperature state equal');
-      console.log(tempData);
-    })
-    .catch((err) => console.log(err));*/
   }
-
-  useEffect(()=>{
-    console.log("useEffect");
-    console.log(tempData);
-  }, [tempData])
 
   return (
     <div className="container">
@@ -244,7 +173,7 @@ function App() {
 
       {forecast && < Forecast data={forecast} />}
 
-      {tempData && < LineChart data={tempData} />}
+      {temperatureData && < LineChart chartData={temperatureData} />}
       
     </div>
   );

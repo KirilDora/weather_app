@@ -3,20 +3,24 @@ const Schema = mongoose.Schema;
 
 const weatherSchema = new Schema({
   tempApiOne: {
-      type: Number,
-      required: true,
+    type: Number,
+    required: true,
   },
   tempApiTwo: {
-      type: Number,
-      required: true,
+    type: Number,
+    required: true,
   },
   tempApiThree: {
-      type: Number,
-      required: true,
+    type: Number,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
   },
   date: {
-      type: Date,
-      default: Date.now
+    type: Date,
+    default: Date.now
   }
 });
 
